@@ -1,0 +1,41 @@
+div.ultra_selectWrapper
+  div.ultra_gridSelectFocus
+    input.ultra_hiddenInput(ng-model="$ctrl.title[0]" ng-required="{{$ctrl.fieldOptions.templateOptions.required}}" )
+    div.form-control.ultra_selectFocus(
+      ng-class="[{true: $ctrl.class}[true], {true: $ctrl.classForSelectFocus}[true], {'ultra_blueBorder': $ctrl.blueBorder}, {'ultra_redBorder': $ctrl.redClass}, {'ultra_backlightRedBorder': $ctrl.backlightRed}]"
+      ng-click="$ctrl.dropdownOpen($event)" ng-disabled="$ctrl.fieldOptions.data.disabledField")
+      div.ultra_title_item(ng-repeat="item in $ctrl.title track by $index" ng-class="{'ultra_title_item_multiSelect': $ctrl.fieldOptions.data.multiSelect}")
+        div.ultra_title_item_container(ng-class="$ctrl.class")
+          div.ultra_title_item_content(ng-repeat="title in item.value track by $index" ng-class="$ctrl.class" )
+            span.ultra_title_item_label(ng-class="$ctrl.class" ng-if="title.label" ng-bind="title.label")
+            span.ultra_title_item_non_bold_label(ng-class="$ctrl.class" ng-if="title.non_bold_label" ng-bind="title.non_bold_label")
+            span(ng-class="[{true: $ctrl.class}[true], {'ultra_title_item_name': $ctrl.fieldOptions.data.noEndPoint != true}]" ng-if="title.name" ng-bind="title.name")
+        div.ultra_title_item_delete(ng-if="$ctrl.fieldOptions.data.multiSelect" ng-click="$ctrl.titleDelete(item)") ✖
+    button.btn.btn-default.ultra_button(tabindex="-1" type='button' ng-click="model[options.key] = undefined" ng-disabled="$ctrl.fieldOptions.data.disabledField" ng-mouseup="$ctrl.resetDataField()") ✖
+  div.ultra_dropdown(ng-class="$ctrl.classForDropdown" ng-style="{'visibility': $ctrl.showDropdown ? 'visible' : 'hidden'}")
+    div.ultra_grid
+      div.ultra_wrapper(ng-style="{'grid-row': $ctrl.bottom ? 2 : 1}")
+        i.ultra_iconInput(class="fa fa-search" aria-hidden="true")
+        input.ultra_searchField(
+          autofocus ng-class="$ctrl.classForSearchField"
+          ng-model="$ctrl.searchingText"
+          ng-model-options="{debounce: 500}"
+          autocomplete="off"
+          placeholder="{{$ctrl.fieldOptions.data.placeholder}}"
+          )
+        span.ultra_count(ng-if="$ctrl.fieldOptions.data.count" ng-bind-template="Всего: {{$ctrl.fieldOptions.data.count}}")
+      div.ultra_scrollable(ng-style="{'grid-row': $ctrl.bottom ? 1 : 2}")
+        div.ultra_item.ultra_searchingInfo(ng-if="$ctrl.searching") Идет поиск ...
+        div.ultra_item.ultra_searchingInfo(ng-if="$ctrl.options.length == 0 && !$ctrl.searching") Не найдено
+        div.ultra_item(ng-repeat="property in $ctrl.options" ng-click="$ctrl.onChoose(property)")
+          i.ultra_icon(ng-if="$ctrl.fieldOptions.data.icon" ng-class="$ctrl.fieldOptions.data.icon" aria-hidden="true")
+          span.ultra_mainTitle(ng-if="$ctrl.fieldOptions.data.mainTitle" ng-bind-html="property[$ctrl.fieldOptions.data.mainTitle]")
+          span.ultra_additionalTitle(ng-if="$ctrl.fieldOptions.data.additionalTitle" ng-bind-html="property[$ctrl.fieldOptions.data.additionalTitle]")
+          span.ultra_titleInBrackets(ng-if="$ctrl.fieldOptions.data.titleInBrackets && property[$ctrl.fieldOptions.data.titleInBrackets] != null" ng-bind-template=" ({{property[$ctrl.fieldOptions.data.titleInBrackets]}}) ")
+          
+          div.ultra_description(ng-if="$ctrl.fieldOptions.data.description" ng-class="{'ultra_description_inline': $ctrl.fieldOptions.data.inline}")
+            span(ng-repeat="description_title in $ctrl.fieldOptions.data.description" ng-if="property[description_title.name]")
+              span.ultra_descriptionName(ng-if="description_title.label" ng-bind-html="description_title.label")
+              span.ultra_descriptionItem(ng-bind-html="property[description_title.name]")
+              span.ultra_descriptionItem(ng-if="description_title.descriptionField" ng-bind-html="property[description_title.descriptionField]")
+              span.ultra_descriptionItem(ng-if="description_title.descriptionLabel" ng-bind-html="description_title.descriptionLabel")
